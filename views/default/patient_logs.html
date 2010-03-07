@@ -1,0 +1,14 @@
+{{extend 'layout.html'}}
+
+<h1>Patient Medical Events</h1>
+<ul>
+{{if logs:}}
+{{for log in logs:}}
+<li>
+<a href="{{=URL(r=request,f='read',args=(log.tablename,log.record_id))}}">{{=log.tablename}}: {{=log.message}}</a>
+</li>
+{{pass}}
+</ul>
+{{else:}}
+<h2>No events recorded</h2>
+{{pass}}

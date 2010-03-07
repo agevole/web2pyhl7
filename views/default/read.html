@@ -1,0 +1,16 @@
+{{extend 'layout.html'}}
+
+<h1>Info {{=capitalize(request.args(0))}}</h1>
+[{{=edit_button}}]
+
+<br /><br />
+<table width="100%"><tr><td>
+{{=form}}
+</td><td class="rightcol">
+<ul>
+{{for ref in references:}}
+<li>{{=ref}}</li>
+{{pass}}
+</ul>
+</td></tr></table>
+

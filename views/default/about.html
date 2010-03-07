@@ -1,0 +1,28 @@
+{{extend 'layout.html'}}
+
+<h1>About {{=response.title}}</h1>
+
+<h2>Authors and Copyright/Trademark Owners</h2>
+<p>Debebe Asefa &lt;<a href="mailto:debebea@yahoo.com">debebea@yahoo.com</a>&gt;</p>
+<p>Massimo Di Pierro &lt;<a href="mailto:mdipierro@cs.depaul.edu">mdipierro@cs.depaul.edu</a>&gt;</p>
+</ul>
+
+<h2>License</h2>
+<p>This program is open source and released under the Gnu Public License version 2.0.</p>
+<p>You can use it an modify it as long as license page is retained.</p>
+<p>This license and not cover and does not overrides the licenses of web2py, the style files and the javascript code that is distributed with it.</p>
+
+<h2>Features</h2>
+<p>This system implements 90 connected database tables which implement the <a href="http://www.hl7.org/">Health Level 7</a> (HL7) specifications. These tables are: {{for tablename in db.tables:}}{{=capitalize(tablename)}}, {{pass}} for a total of 653 database fields.</p>
+<p>It is strong on securty by proving authentication, authorization and enforcing different permission requirements for Doctors, Nurses and Administrators.</p>
+<p>It provides full audit trail for every table and record.</p>
+<p>It provides profile pages for the doctors (with pictures), a visual appointment scheduling system, and a patient mapping using Google maps.</p>
+<p>It implements Ajax search for ease of search and navigation.</p>
+<p>It is highly modular and customizable according to your needs.</p>
+<p>It runs everywhere including Windows, Mac, Linux, Amazon EC2 Cloud and the Goolge App Engine Cloud</p>
+
+<h2>Caveats</h2>
+<p>While it works for most applications, {{=response.title}} is a work in progress. In fact we continue to constantly improve it based on users' feedback.</p>
+<p>The table structure implements the <a href="http://www.hl7.org/">Health Level 7</a> (HL7)
+specifications, but {{=response.title}} does not yet include an implementation of the HL7 communication protocols. This is something we are currently working on.</p>
+<p>Feel free to contact is if you want to use or contribute to this project.</p>

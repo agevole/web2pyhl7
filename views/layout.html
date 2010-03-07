@@ -1,0 +1,171 @@
+
+<!doctype html public "-//w3c//dtd xhtml 1.0 transitional//en" "http://www.w3.org/tr/xhtml1/dtd/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+      <title>
+        {{=response.title}}
+      </title>
+      <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+      {{response.files.append(URL(r=request,c='static',f='style.css'))}}
+      {{include 'web2py_ajax.html'}}
+      <!--[if ie 6]>
+        <link rel="stylesheet" type="text/css" href="iecss.css" />
+        <![endif]-->
+      </head>
+      <body>
+        <div id="main_container">
+          <div class="header">
+            <div id="logo">
+              <a href="{{=URL(r=request,f='index')}}">{{=response.title}}</a>
+            </div>
+            <div class="right_header">
+              <div class="top_menu">
+		{{ if 'auth' in globals():}}
+		[ {{if not auth.user:}}
+		<a href="{{=URL(r=request,f='user/login')}}">{{=T('login')}}</a> |
+		<a href="{{=URL(r=request,f='user/register')}}">{{=T('register')}}</a> |
+		<a href="{{=URL(r=request,f='user/request_reset_password')}}">{{=T('lost password')}}</a>
+		{{else:}}
+		{{=auth.user.first_name}} |
+		<a href="{{=URL(r=request,f='user/logout')}}">{{=T('logout')}}</a> |
+		<a href="{{=URL(r=request,f='user/change_password')}}">{{=T('change password')}}</a> |
+		<a href="{{=URL(r=request,f='user/profile')}}">{{=T('edit profile')}}</a>
+		{{pass}} ]
+		{{pass}}
+              </div>
+              <div id="menu">
+                {{=MENU(response.menu)}}
+              </div>
+            </div>
+          </div>	  
+          {{if request.function=='index':}}
+          <div id="middle_box">
+            <div class="middle_box_content">              
+	      <br/><br/>{{=response.subtitle}}
+              <a href="{{=URL(r=request,f='about')}}" class="details">
+                + read more
+              </a>
+            </div>
+          </div>
+	  {{else:}}
+          <div class="included_content">
+	    <div class="flash">{{=response.flash}}</div>
+            {{include}}
+          </div>
+          {{pass}}
+	  {{if session.patient_id:}}
+          <div id="main_content">
+            <div class="box_content">
+              <div class="box_title">
+                <div class="title_icon">
+                  <img src="{{=URL(r=request,c='static',f='images/mini_icon1.gif')}}" alt="" />
+                </div>
+                <h2>
+                  patient
+                  <span class="dark_blue">Info</span>
+                </h2>
+              </div>
+              <div class="box_text_content">
+                <img src="{{=URL(r=request,c='static',f='images/checked.gif')}}" alt="" class="box_icon" />
+                <div class="box_text">
+                  {{=session.patient['first_name']}}
+                  {{=session.patient['last_name']}}<br/>
+                  Ethnicity: {{=session.patient['ethnicity']}}<br/>
+                </div>
+                <a href="{{=URL(r=request,f='read',args=('patient',session.patient_id))}}" class="details">
+                  + details
+                </a>
+              </div>
+            </div>
+            <div class="box_content">
+              <div class="box_title">
+                <div class="title_icon">
+                  <img src="{{=URL(r=request,c='static',f='images/mini_icon3.gif')}}" alt="" />
+                </div>
+                <h2>
+                  patient
+                  <span class="dark_blue">Appointments</span>
+                </h2>
+              </div>
+              <div class="box_text_content">
+                <img src="{{=URL(r=request,c='static',f='images/calendar.gif')}}" alt="" class="box_icon" />
+                <div class="box_text">
+                  {{for appointment in db(db.appointment.patient==session.patient_id).select(orderby=~db.appointment.start_time,limitby=(0,5)):}}
+		  <a href="{{=URL(r=request,f='read',args=('appointment',appointment.id))}}">{{=appointment.start_time.strftime('%d %B %Y')}}</a><br/>
+		  {{pass}}
+                </div>
+                <a href="{{=URL(r=request,f='select',args=('appointment','patient',session.patient_id))}}" class="details">
+                  + details
+                </a>
+              </div>
+            </div>
+            <div class="box_content">
+              <div class="box_title">
+                <div class="title_icon">
+                  <img src="{{=URL(r=request,c='static',f='images/mini_icon2.gif')}}" alt="" />
+                </div>
+                <h2>
+                  patient
+                  <span class="dark_blue">Events</span>
+                </h2>
+              </div>
+              <div class="box_text_content">
+                <img src="{{=URL(r=request,c='static',f='images/checked.gif')}}" alt="" class="box_icon" />
+                <div class="box_text">
+                  {{for log in db(db.patient_log.patient==session.patient_id).select(orderby=~db.patient_log.created_on,limitby=(0,5)):}}
+		  <a href="{{=URL(r=request,f='read',args=(log.tablename,log.record_id))}}">{{=log.tablename}}: {{=log.message}}</a><br/>
+		  {{pass}}
+                </div>
+                <a href="{{=URL(r=request,f='patient_logs',)}}" class="details">
+                  + details
+                </a>
+              </div>
+            </div>
+            <div class="clear"></div>
+          </div>
+	  {{pass}}
+          <div class="pattern_bg">
+            <div class="pattern_box">
+              <div class="pattern_box_icon">
+                <img src="{{=URL(r=request,c='static',f='images/icon1.png')}}" alt="" width="70" height="112" />
+              </div>
+              <div class="pattern_content">
+                <h2>
+                  search
+                  <span class="blue">Drugs</span>
+                </h2>
+                <p class="pat">
+                  <a href="http://www.rxlist.com/drugs/alpha_a.htm">rxList</a>
+                </p>
+              </div>
+            </div>
+            <div class="pattern_box">
+              <div class="pattern_box_icon">
+                <img src="{{=URL(r=request,c='static',f='images/icon2.png')}}" alt="" width="70" height="112" />
+              </div>
+              <div class="pattern_content">
+                <h2>
+                  search
+                  <span class="blue">Diseases</span>
+                </h2>
+                <p class="pat">
+                  <a href="http://emedicine.medscape.com/">eMedicine</a>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div id="footer">
+            <div class="center_footer">
+              <a href="{{=URL(r=request,f='about')}}">&copy; 2009. All rights reserved</a> -
+	      powered by <a href="http://web2py.com">web2py</a>
+            </div>
+            <div class="footer_links">
+              <a href="http://csstemplatesmarket.com">
+                <img src="{{=URL(r=request,c='static',f='images/csstemplatesmarket.gif')}}" alt="" border="0" />
+              </a>
+            </div>
+          </div>
+        </div>
+      </body>
+    </html>
+    

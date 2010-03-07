@@ -1,0 +1,30 @@
+{{response.files.append(URL(r=request,c='static',f='ui.jqgrid.css'))}}
+{{response.files.append(URL(r=request,c='static',f='cupertino/jquery-ui-1.7.2.custom.css'))}}
+{{response.files.append(URL(r=request,c='static',f='jquery-ui-1.7.2.custom.min.js'))}}
+{{response.files.append(URL(r=request,c='static',f='i18n/grid.locale-en.js'))}}
+{{response.files.append(URL(r=request,c='static',f='jquery.jqGrid.min.js'))}}
+{{extend 'layout.html'}}
+
+<h1>List {{=pluralize(capitalize(request.args(0)))}}</h1>
+{{if request.args(1)=='patient':}}
+<h2>For Patient {{=session.patient['first_name']}} {{=session.patient['last_name']}}</h2>
+{{elif request.args(1):}}
+<h2>For {{=capitalize(request.args(1))}} equal to "{{=request.args(2)}}"</h2>
+{{pass}}
+
+[{{=create_button}}]{{if request.args(0)=='patient':}}[<a href="{{=URL(r=request,f='map')}}">Map Patients</a>]{{pass}}[{{=A('Search '+pluralize(capitalize(request.args(0))),_href='#null',_onclick='jQuery("#search_list2").click();')}}]
+
+<br /><br />
+
+<table id="list2"></table> <div id="pager2"></div>
+
+<script type="text/javascript">
+{{url=URL(r=request,f='data',args=request.args)}}
+{{colnames = [capitalize(x) for x in table.fields if table[x].readable]}}
+{{colmodel = [{'name':x,'index':x, 'width':80, 'sortable':True} for x in table.fields if table[x].readable]}}
+jQuery(document).ready(function(){jQuery("#list2").jqGrid({ url:'{{=url}}', datatype: "json", colNames: {{=json(colnames)}},
+colModel:{{=json(colmodel)}}, rowNum:10, rowList:[10,20,30], pager: '#pager2', viewrecords: true,height:400}); 
+jQuery("#list2").jqGrid('navGrid','#pager2',{search:true,add:false,edit:false,del:false});
+jQuery("#list2").setGridWidth(860,false);
+});
+</script>

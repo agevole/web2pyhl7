@@ -1,0 +1,46 @@
+db.define_table('patient_info',
+            Field('patient_id', db.patient),
+            Field('first_name', db.patient),
+            Field('middle_initial', db.patient),
+            Field('last_name', db.patient),
+            Field('member_ID', db.insurance_subscriber),
+            Field('subscriber_ID',db.insurance_subscriber),
+            Field('patient_relationship_to_subscriber'),
+            Field('financial_responsibility_party_type',db.guarantor),
+            Field('health_plan_coverage_code', db.health_plan_coverage),
+            Field('health_plan_coverage_description', db.health_plan_coverage),
+            Field('health_plan_coverage_start_dates', db.health_plan_coverage),
+            Field('health_plan_coverage_end_date', db.health_plan_coverage),
+            Field('health_plan_name'),
+            Field('patient_address'),
+            Field('patient_phone'),
+            Field('patient_email'),
+            Field('patient_name'),
+            Field('patient_date_of_birth', 'datetime'),   
+            Field('record_created_on', 'datetime', default=request.now),
+            Field('record_created_by'))
+
+
+db.patient_info.patient_id.requires= IS_IN_DB(db,'patient.id', '%(first_name + ''+ middle_initial+''+last_name)s')
+db.patient_info.first_name.requires=IS_IN_DB(db,'patient.id', '%(first_name)s')
+db.patient_info.middle_initial.requires=IS_IN_DB(db,'patient.id', '%(last_name)s')
+db.patient_info.last_name.requires=IS_IN_DB(db,'patient.id', '%(last_name)s')
+
+db.patient_info.member_ID.requires=IS_IN_DB(db,'insurance_subscriber.id', '%(member_ID)s')
+db.patient_info.subscriber_ID.requires=IS_IN_DB(db, 'insurance_subscriber.id', '%(subscriber_ID)s')
+db.patient_info.financial_responsibility_party_type.requires=IS_IN_DB(db, 'guarantor.id', '%(financial_responsibility_party_type)s')
+  
+db.patient_info.health_plan_coverage_code.requires=IS_IN_DB(db, 'health_plan_coverage.id', '%(coverage_plan_code)s')
+db.patient_info.health_plan_coverage_description.requires=IS_IN_DB(db, 'health_plan_coverage.id', '%(coverage_plan_description)s')
+db.patient_info.health_plan_coverage_start_date.requires=IS_IN_DB(db, 'health_plan_coverage.id', '%(coverage_start_date)s')
+db.patient_info.health_plan_coverage_end_date.requires=IS_IN_DB(db, 'health_plan_coverage.id', '%(coverage_end_date)s')
+
+
+       
+db.patient_info.record_created_by.readable = False
+db.patient_info.record_created_by.writable = False
+db.patient_info.record_created_on.readable = False
+db.patient_info.record_created_on.writable = False
+db.patient_info.patient_relationship_to_subscriber.requires=IS_IN_SET(['Family dependent(FAMDEP)','Handicapped dependent(HANDIC)', 
+'Injured plantiff(INJ)','Self(SELF)', 'Spnonsored dependent(SPON)','Fulltime student(FSTUD)','Part-time student(PSTUD)'], 
+ error_message=T('select one that applies'))

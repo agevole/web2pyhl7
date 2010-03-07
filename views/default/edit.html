@@ -1,0 +1,7 @@
+{{extend 'layout.html'}}
+
+{{if form.record:}}<h1>Edit {{=capitalize(request.args(0))}}</h1>{{else:}}<h1>New {{=capitalize(request.args(0))}}</h1>{{pass}}
+
+<br /><br />
+{{=form}}
+

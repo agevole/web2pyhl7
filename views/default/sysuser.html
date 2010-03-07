@@ -1,0 +1,21 @@
+{{extend 'layout.html'}}
+{{from gluon.contrib.markdown import WIKI}}
+
+<h1>{{=user.status}} {{=user.first_name}} {{=user.last_name}}</h1>
+
+<img src="{{=URL(r=request,f='download', args=user.picture)}}" align="right" width="200px"/>
+
+<h2>Contact Info</h2>
+{{=user.office_address}}<br/>
+{{=user.phone_number_office}}
+
+<h2>Specializations</h2>
+{{=user.specializations}}
+
+<h2>Affiliations</h2>
+{{=user.affiliations}}
+
+<h2>Education</h2>
+{{=WIKI(user.education)}}
+
+<p>{{=WIKI(user.other_info or '')}}</p>

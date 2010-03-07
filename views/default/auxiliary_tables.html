@@ -1,0 +1,10 @@
+{{extend 'layout.html'}}
+
+<h1>Auxiliary tables</h1>
+<ul>
+{{for tablename in sorted(AUXILIARY_TABLES):}}
+<li>
+<a href="{{=URL(r=request,f='auxiliary',args=tablename)}}">{{=capitalize(tablename)}}</a>
+</li>
+{{pass}}
+</ul>
