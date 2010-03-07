@@ -2799,7 +2799,7 @@ if request.vars.reset:
             table.import_from_csv_file(open(os.path.join(request.folder,'private/table_%s.csv' % table),'r'))
             print table,'loaded'
         except Exception, e:
-            print e
+            raise e
 
 def capitalize(text):
     return ' '.join([x.capitalize() for x in text[text.find('.')+1:].split('_')])
